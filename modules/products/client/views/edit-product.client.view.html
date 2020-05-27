@@ -1,0 +1,304 @@
+<section>
+    <!-- <div layout="row">
+        <md-subheader  ng-show="ctrl.product.esInsumo" class="md-primary md-no-sticky">Editar Insumo</md-subheader>
+        <md-subheader ng-show="ctrl.product.esProducto && ctrl.product.reseller == true" class="md-primary md-no-sticky">Editar Producto</md-subheader>
+        <md-subheader ng-show="ctrl.product.esMateriaPrima && ctrl.product.reseller == false" class="md-primary md-no-sticky">Editar Materia Prima</md-subheader>
+    </div> -->
+    <form novalidate>
+        <fieldset>
+            <div style="background:#fafafa" layout-padding>
+                <div layout="row" layout-xs="column" style="padding:0">
+                    <md-input-container flex>
+                        <label for="name">Nombre</label>
+                        <input type="text" data-ng-model="ctrl.product.name" id="name" required>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label for="code">Código</label>
+                        <input type="text" data-ng-model="ctrl.product.code" id="code">
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label for="description">Descripción</label>
+                        <input type="text" data-ng-model="ctrl.product.description" id="description" required>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label for="brandName">Marca</label>
+                        <input type="text" data-ng-model="ctrl.product.brandName" id="brandName" required>
+                    </md-input-container>
+                    <!-- <md-input-container flex>
+                        <label for="storedIn">Depósito</label>
+                        <input type="text" data-ng-model="ctrl.product.storedIn" id="storedIn">
+                    </md-input-container> -->
+                    <div layout="row" layout-align="center center">
+                      <div class="anulado" ng-show="errorProducto">
+                        {{errorProducto}}
+                      </div>
+                    </div>
+                </div>
+
+                <div layout="row" layout-xs="column" style="padding:0">
+                    <div flex ng-show="((ctrl.product.esProducto) && (!ctrl.product.reseller))">
+                        <h3>Categoría </h3>
+                        <md-input-container class="md-block">
+                            <md-select ng-model="ctrl.product.category2" placeholder="{{ctrl.product.category2.name}}">
+                              <md-option ng-repeat="category2 in ctrl.categories | filter:enterprise.enterprise | filter: {type1: 'Producto'} | orderBy:'name' | filter: { deleted: false }" value="{{category2._id}}">
+                                {{category2.name}}
+                              </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div flex ng-show="ctrl.product.esInsumo">
+                        <h3>Categoría </h3>
+                        <md-input-container class="md-block">
+                            <md-select ng-model="ctrl.product.category2" placeholder="{{ctrl.product.category2.name}}">
+                              <md-option ng-repeat="category2 in ctrl.categories | filter:enterprise.enterprise | filter: {type1: 'Insumo '} | orderBy:'name' | filter: { deleted: false }" value="{{category2._id}}">
+                                {{category2.name}}
+                              </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div flex ng-show="ctrl.product.esMateriaPrima">
+                        <h3>Categoría </h3>
+                        <md-input-container class="md-block">
+                            <md-select ng-model="ctrl.product.category2" placeholder="{{ctrl.product.category2.name}}">
+                              <md-option ng-repeat="category2 in ctrl.categories | filter:enterprise.enterprise | filter: {type1: 'Materia Prima'} | orderBy:'name' | filter: { deleted: false }" value="{{category2._id}}">
+                                {{category2.name}}
+                              </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div flex ng-show="ctrl.tipoProducto == 'p'">
+                        <h3>Seleccionar IVA</h3>
+                          <md-input-container class="md-block" flex>
+                            <md-select ng-model="ctrl.product.tax" md-on-open="ctrl.findTaxes()">
+                              <md-option ng-repeat="tax in ctrl.taxes | orderBy:'name'" value="{{tax.value}}">{{tax.name}}</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                  
+                    <div flex>
+                        <h3>Unidad de Medida </h3>
+                        <md-input-container class="md-block">
+                            <md-select ng-model="ctrl.product.metric" md-on-open="ctrl.findMetrics()" placeholder="{{ctrl.product.metric}}">
+                              <md-option ng-repeat="metric in ctrl.metrics | orderBy:'metric'" value="{{metric}}">
+                                {{metric}}
+                              </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            
+            <div layout-padding layout-margin></div>
+            
+            <div ng-init="ctrl.initCostCenters()">
+                <h2>Control de Stock</h2>
+                <div layout-margin></div>
+                <div ng-repeat="stock in stocks" hide-gt-sm layout-sm="column" flex>
+                    <h3>{{stock.costCenterName}}</h3>
+                    <div layout="row">
+                        <md-input-container flex="50">
+                            <label for="idealStock">Stock ideal</label>
+                            <input type="number" data-ng-model="stock.idealStock" id="idealStock" required>
+                        </md-input-container>
+                        <md-input-container flex="50">
+                            <label for="criticalStock">Stock crítico</label>
+                            <input type="number" data-ng-model="stock.criticalStock" id="criticalStock" required>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div layout="row" flex hide-sm hide-xs>
+                    <div ng-repeat="stock in stocks" flex>
+                        <h3>{{stock.costCenterName}}</h3>
+                        <div layout="row">
+                            <md-input-container flex>
+                                <label for="idealStock">Stock ideal</label>
+                                <input type="number" data-ng-model="stock.idealStock" id="idealStock" required>
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label for="criticalStock">Stock crítico</label>
+                                <input type="number" data-ng-model="stock.criticalStock" id="criticalStock" required>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div layout-margin></div>
+
+            <div ng-show="ctrl.tipoProducto != 'p'">
+                <h2>Proveedores</h2>
+                <div layout="row">
+                    <md-input-container flex="25" flex-xs="50" style="margin-bottom:0;margin-top:0">
+                        <label>Buscar Proveedor</label>
+                        <md-select ng-model="ctrl.productprovider" ng-change="ctrl.cambiarProveedor(ctrl.product.provider)">
+                          <md-option ng-repeat="provider in ctrl.providers | filter:enterprise.enterprise | orderBy:'name' | filter: { deleted: false }" value="{{provider._id}}">
+                            {{provider.name}}
+                          </md-option>
+                        </md-select>
+                    </md-input-container>                
+                
+                    <md-input-container flex="25" ng-show="ctrl.tipoProducto != 'p'" style="margin-bottom:0;margin-top:0">
+                      <label for="costPerUnit">Costo unit.</label>
+                      <input type="number" data-ng-model="ctrl.costPerUnitProvider" id="costPerUnit">
+                    </md-input-container>
+
+                    <md-input-container flex="25" style="margin-bottom:0;margin-top:0">
+                        <label>IVA</label>
+                        <md-select ng-model="ctrl.providertax" md-on-open="ctrl.findTaxes()">
+                          <md-option ng-repeat="tax in ctrl.taxes | orderBy:'name'" value="{{tax.value}}">{{tax.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <div>
+                        <md-button style="margin:0 auto" aria-label="Crear" class="md-fab md-mini md-raised md-primary" ng-click="ctrl.createprovider()">
+                            <md-icon><ng-md-icon icon="{{ctrl.editicon}}"></ng-md-icon></md-icon>
+                            <md-tooltip md-direction="up" md-autohide="true">{{ctrl.editname}}</md-tooltip>
+                        </md-button>
+
+                        <md-button style="margin:0 auto" aria-label="Crear" class="md-fab md-mini md-raised md-warn" ng-click="ctrl.canceledit()" ng-if="ctrl.editicon=='check'">
+                            <md-icon><ng-md-icon icon="close"></ng-md-icon></md-icon>
+                            <md-tooltip md-direction="up" md-autohide="true">Cancelear</md-tooltip>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+
+            <md-list data-ng-show="(ctrl.product.provider.length > 0)&&(ctrl.tipoProducto != 'p')">
+              <md-list-item>
+                <strong flex="30">Proveedores</strong>
+                <strong flex="20">Costo por unidad</strong>
+                <strong flex="20">IVA</strong>
+                <span flex></span>
+              </md-list-item>
+              <md-divider></md-divider>
+              <md-list-item class="min-height" ng-repeat="item in ctrl.product.provider">
+                <div flex="30">{{item.name}}</div>
+                <div flex="20">{{item.price|currency}}</div>
+                <div flex="20">{{item.tax}}</div>
+                <span flex></span>
+                <ng-md-icon style="cursor:pointer;fill:blue" size="15" icon="settings" ng-click="ctrl.editprovider($index)" aria-label="Editar"></ng-md-icon>
+                <span layout-margin></span>
+                <ng-md-icon style="cursor:pointer;fill:red" size="15" icon="delete" ng-click="ctrl.deleteprovider($index)" aria-label="Borrar"></ng-md-icon>
+                <md-divider ng-if="!$last"></md-divider>
+              </md-list-item>
+            </md-list>
+
+            <div layout-margin layout-padding></div>
+
+            <div>
+                <div layout="row" ng-show="ctrl.product.reseller == true" >
+                    <md-checkbox class="md-primary" ng-model="ctrl.product.reseller" aria-label="Reventa?"><h2>Para reventa</h2></md-checkbox>
+                </div>
+                <div layout="row" ng-show="((ctrl.product.reseller == false)&&(ctrl.product.esMateriaPrima))">
+                    <md-checkbox class="md-primary" ng-model="ctrl.reseller2" aria-label="Reventa?"><h2>Para reventa</h2></md-checkbox>
+                </div>
+            </div>
+
+            <div ng-if="tipoProducto == 'p' || ctrl.reseller2 || ctrl.product.reseller" ng-init="ctrl.findCategoriesCliente()">
+                <div><h2>Listas de Precio</h2></div>
+                <div layout="row" layout-xs="column" flex>
+                    <md-input-container flex flex-xs="33" ng-repeat="item in ctrl.product.catPrice">
+                        <label for="storedIn">{{item.catName}}</label>
+                        <input type="text" type="number" min="0" data-ng-model="item.price">
+                    </md-input-container>
+                </div>
+            </div>
+            
+            <section ng-show="(ctrl.product.esProducto)&&(ctrl.product.produccion.length > 0)">
+                <h2>Materias Primas</h2>
+                <md-list>
+                    <md-list-item>
+                        <strong flex="30">Nombre</strong>
+                        <strong flex="20">Cantidad</strong>
+                        <strong flex="20">Valor</strong>
+                        <span flex></span>
+                        <ng-md-icon icon="settings" style="fill:blue" size="15" ng-click="ctrl.habilitarEdicion()" ng-show="!modificar"></ng-md-icon>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item class="min-height" ng-repeat="item in ctrl.product.produccion">
+                        <!-- name -->
+                        <div flex="30">{{item.nombre}}</div>
+                        <!-- cantidad -->
+                        <div flex="20" ng-show="!modificar">{{item.cantidad}} {{ item.producto.metric}}</div>
+                        <input flex="20" type="number" ng-show="modificar" ng-change="ctrl.modificoProducto(item.producto._id, item.cantidad)" data-ng-model="item.cantidad">
+                        <div flex="20">{{item.total | currency}}</div>
+                        <span flex></span>
+                        <ng-md-icon icon="delete" style="fill:red" size="15" ng-click="ctrl.eliminar(item.producto._id,item.cantidad)"></ng-md-icon>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                    <md-list-item>
+                      <div flex="30"></div>
+                      <div flex="20"></div>
+                      <div flex="20">
+                        <div layout-margin></div>
+                          <p><b>Costo Total</b></p>
+                          <h2><b>{{ctrl.product.costPerUnit | currency}}</b></h2>
+                      </div>
+                  </md-list-item>
+                </md-list>
+            </section>
+
+            <md-button class="md-primary" aria-label="Ver" ng-show="(verListado == false)&&(ctrl.product.esProducto)&&(ctrl.product.reseller == false)" ng-click="ctrl.habilitoLista()">
+                <md-icon style="margin-top:5px">
+                    <ng-md-icon 
+                      size="15" 
+                      icon="settings">
+                    </ng-md-icon>
+                </md-icon>
+                Agregar Materias Primas
+            </md-button>
+            <div ng-show="verListado == true">
+                <div layout="row">
+                    <md-icon><ng-md-icon icon="search"></ng-md-icon></md-icon>
+                    <md-input-container style="margin-bottom:0" flex>
+                      <label for="search">Buscar Materias Primas</label>
+                      <input type="text" data-ng-model="search.$" id="search" ng-disabled="false">
+                    </md-input-container>
+                </div>
+                <md-list-item class="min-height" ng-if="item.costPerUnit > 0" ng-repeat="item in ctrl.productos | filter:search | filter: { deleted : false } | filter: { esMateriaPrima : true }">
+                    <div flex="60">{{item.name}}</div>
+                    <div flex="20"><input style="width:80%;border:none;border-bottom:1px solid rgba(0,0,0,0.12)" type="number" min="0" data-ng-model="cantidad" ng-change="errorRepetido[$index] = false" placeholder="{{item.metric}}"></div>
+                    <div flex="20" ng-if="!errorRepetido[$index]" data-title="Name">{{item.costPerUnit | currency}}</div>
+                    <div class="anulado" flex="20" ng-if="errorRepetido[$index]"> {{errorRepetido[$index]}}</div>
+                    <ng-md-icon style="cursor:pointer" ng-click="ctrl.addMateriaPrima(item,cantidad,$index)" size="18" icon="add"></ng-md-icon>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </div>
+            
+            <div layout-margin layout-padding></div>
+            <div layout-margin layout-padding></div>
+
+            <div class="lock-size fab-ventas" layout="row" layout-padding>
+                <!-- <md-fab-speed-dial md-open="false" md-direction="{{ctrl.selectedDirection}}" ng-class="ctrl.selectedMode">
+                    <md-fab-trigger>
+                        <md-button aria-label="menu" class="md-fab md-warn">
+                          <md-icon><ng-md-icon icon="menu"></ng-md-icon></md-icon>
+                        </md-button>
+                    </md-fab-trigger>
+                    <md-fab-actions>
+                        <md-button aria-label="Guardar" class="md-fab md-raised md-mini" ng-click="ctrl.update(ctrl.product,ctrl.product.provider)">
+                            <md-icon><ng-md-icon icon="save"></ng-md-icon></md-icon>
+                            <md-tooltip md-direction="up" md-autohide="true">Guardar</md-tooltip>
+                        </md-button>
+                        <md-button aria-label="Volver" class="md-fab md-raised md-mini" ng-click="ctrl.rutaVolver()" >
+                            <md-icon><ng-md-icon icon="reply"></ng-md-icon></md-icon>
+                            <md-tooltip md-direction="up" md-autohide="true">Volver</md-tooltip>
+                        </md-button>
+                    </md-fab-actions>
+                </md-fab-speed-dial> -->
+                <md-button aria-label="Volver" class="md-fab md-raised md-mini" ng-click="ctrl.rutaVolver()" >
+                    <md-icon><ng-md-icon icon="arrow_back"></ng-md-icon></md-icon>
+                    <md-tooltip md-direction="top" md-autohide="true">Volver</md-tooltip>
+                </md-button>
+                <md-button aria-label="Guardar" class="md-fab md-raised md-mini md-primary" ng-click="ctrl.update(ctrl.product,ctrl.product.provider)">
+                    <md-icon><ng-md-icon icon="save"></ng-md-icon></md-icon>
+                    <md-tooltip md-direction="top" md-autohide="true">Guardar</md-tooltip>
+                </md-button>
+            </div>
+
+            <div layout="row" layout-align="center" data-ng-show="error" class="anulado">
+                <strong data-ng-bind="error"></strong>
+            </div>
+        </fieldset>
+    </form>
+</section>

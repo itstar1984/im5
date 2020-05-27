@@ -1,0 +1,164 @@
+<section>
+    <div ng-show="isFetching" class="report-overlay">
+        <md-progress-circular md-diameter="140" md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab ng-repeat="timeFilter in timeFilters" label="{{timeFilter.label}}" md-on-select="handleClickTimeFilter(timeFilter.id)">
+            <md-tabs md-dynamic-height md-border-bottom style="background:#f6f6f6">
+                <md-tab ng-repeat="filter in costCentersFilters" label="{{filter.label}}" ng-click="handleClickCostCentersFilter(filter.id)">
+                    <md-content class="report-container">
+                        <div layout-padding></div>
+                        <div layout-gt-xs="row" layout-align="start">
+                            <div class="report-big-total">
+                                Ventas Totales <br>
+                                <div layout="row">
+                                    <md-icon><ng-md-icon size="30" icon="store_mall_directory"></ng-md-icon></md-icon>
+                                    <h1 class="md-display-1">
+                                        <b>{{ getTotal() | currency}}</b>
+                                    </h1>
+                                </div>
+                                <hr>
+                            </div>
+                            <div layout-padding></div>
+                            <div layout="row" style="height:88px">
+                                <div ng-repeat="costCenter in costCenters" layout="row" flex>
+                                    <div class="report-small-total" flex>
+                                        <span>{{costCenter.name}} </span>
+                                        <div layout="row" style="margin-top:16px">
+                                            <md-icon><ng-md-icon size="20" icon="store_mall_directory"></ng-md-icon></md-icon>
+                                            <h2><b>{{costCenter.total | currency}}</b></h2>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                    <div ng-if="!$last" style="margin:2px"></div>
+                                </div>
+                            </div>
+                            <span flex></span>
+                            <div layout-margin></div>
+                            <div layout="row" ng-if="timeFilter.id=='day'">
+                                <div layout="column" class="date-float" flex>
+                                    <md-datepicker
+                                        ng-model="ctrl.date"
+                                        ng-change="onDatePickerChange($event)"
+                                        md-placeholder="Ingresar Fecha">
+                                    </md-datepicker>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div layout="row" ng-if="timeFilter.id=='week'">
+                                <div layout="column" class="date-float" flex>
+                                    Fecha
+                                    <div class="week-picker">
+                                        <input type="week" name="input" ng-model="ctrl.week" ng-change="onChangeWeek()" />
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div layout="row" ng-if="timeFilter.id=='month'">
+                                <div layout="column" class="date-float" flex>
+                                    Fecha
+                                    <div class="week-picker">
+                                        <input type="month" name="input" ng-model="ctrl.month" ng-change="onChangeMonth()" />
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div layout="row" ng-if="timeFilter.id=='period'">
+                                <div layout="column" class="date-float" flex>
+                                    Período
+                                    <div >
+                                        <md-datepicker ng-model="ctrl.from" md-max-date="ctrl.until" ng-change="onChangePeriod()" md-placeholder="Fecha de inicio"></md-datepicker>
+                                        <md-datepicker ng-model="ctrl.until" md-min-date="ctrl.from" ng-disabled="!ctrl.from" ng-change="onChangePeriod()" md-placeholder="Fecha final"></md-datepicker>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div layout-padding></div>
+
+                        <md-list class="min-height">
+                            <div ng-if="isSalesConditionProcessing" class="reports-progress">
+                                <span>Calculado condicion de venta</span>
+                                <md-progress-circular class="report-spinner" md-mode="indeterminate"></md-progress-circular>
+                            </div>
+                            <md-item ng-if="!isSalesConditionProcessing" ng-repeat="condition in salesConditions">
+                                <md-list-item class="no-padding" ng-if="$first">
+                                    <p class="item-name"><b>Cond. de Venta</b></p>
+                                    <p><b>Cant.</b></p>
+                                    <p><b>Total</b></p>
+                                </md-list-item>
+                                <hr ng-if="$first">
+                                <md-list-item class="no-padding">
+                                    <p class="item-name">{{condition.name}}</p>
+                                    <p><em>{{condition.quantity}}</em></p>
+                                    <p><b>{{condition.total | currency}}</b></p>
+                                </md-list-item>
+                                <md-divider ng-if="!$last"></md-divider>
+                            </md-item>
+                        </md-list>
+                        <md-list class="min-height">
+                            <div ng-if="isVoucherTypesProcessing" class="reports-progress">
+                                <span>Calculado comprobantes</span>
+                                <md-progress-circular class="report-spinner" md-mode="indeterminate"></md-progress-circular>
+                            </div>
+                            <md-item ng-if="!isVoucherTypesProcessing" ng-repeat="type in voucherTypes">
+                                <md-list-item class="no-padding" ng-if="$first">
+                                    <p class="item-name"><b>Comprobante</b></p>
+                                    <p><b>Cant.</b></p>
+                                    <p><b>Total</b></p>
+                                </md-list-item>
+                                <hr ng-if="$first">
+                                <md-list-item class="no-padding">
+                                    <p class="item-name">{{type.name}}</p>
+                                    <p><em>{{type.quantity}}</em></p>
+                                    <p><b>{{type.total | currency}}</b></p>
+                                </md-list-item>
+                                <md-divider ng-if="!$last"></md-divider>
+                            </md-item>
+                        </md-list>
+                        <div layout-padding></div>
+                        <div layout="row">
+                            <md-button flex class="md-primary md-hue-1 md-raised" ng-click="handleClickButton('category')">Cat. de Prod.</md-button>
+                            <md-button flex class="md-primary md-hue-1 md-raised" ng-click="handleClickButton('products')">Productos</md-button>
+                            <md-button ng-if="type === 'sales'" flex class="md-primary md-hue-1 md-raised" ng-click="handleClickButton('clients')">Clientes</md-button>
+                            <md-button ng-if="type === 'purchases'" flex class="md-primary md-hue-1 md-raised" ng-click="handleClickButton('providers')">Proveedoress</md-button>
+                        </div>
+
+                        <div ng-if="showProductsCategories" layout-margin quick-ng-repeat="product in productsCategories" quick-repeat-list="productsCategories">
+                            <div>
+                                <h2>{{product.total | currency}}</h2>
+                                <p>{{product.name}} | Cant.: {{product.quantity}} | <b>{{(product.quantity * 100) / getTotalProducts() | number}}%</b></p>
+                            </div>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </div>
+
+                        <div ng-if="showProducts" layout-margin quick-ng-repeat="product in products" quick-repeat-list="products">
+                            <div>
+                                <h2>{{product.total | currency}}</h2>
+                                <p>{{product.name}} | Cant.: {{product.quantity}} | <b>{{(product.quantity * 100) / getTotalProducts() | number}}%</b></p>
+                            </div>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </div>
+
+                        <div ng-if="showClients" layout-margin quick-ng-repeat="client in clients" quick-repeat-list="clients">
+                            <div>
+                                <h2>{{client.total | currency}}</h2>
+                                <p>{{client.name}} | Cant.: {{client.quantity}} | <b>{{(client.quantity * 100) / getTotalProducts() | number}}%</b></p>
+                            </div>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </div>
+
+                        <div ng-if="showProviders" layout-margin quick-ng-repeat="provider in providers" quick-repeat-list="providers">
+                            <div>
+                                <h2>{{provider.total | currency}}</h2>
+                                <p>{{provider.name}} | Cant.: {{provider.quantity}} | <b>{{(provider.quantity * 100) / getTotalProducts() | number}}%</b></p>
+                            </div>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </div>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-tab>
+    </md-tabs>
+</section>

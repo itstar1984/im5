@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  web:
+    build: .
+    depends_on:
+    - db
+    ports:
+        - 3000:3000
+        - 35729:35729
+        - 9229:9229
+        - 9230:9230
+        - 9231:9230
+    volumes:
+        - './:/home/mean/'
+        - 'node_modules:/home/mean/node_modules'
+    command: ['npm', 'start']
+    environment:
+        - NODE_ENV=development
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+        - data:/data/db
+volumes:
+  data:
+  node_modules:

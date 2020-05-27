@@ -1,0 +1,117 @@
+<div class="resumen-view" flex="50" flex-xs="100">
+    <div style="margin-bottom:30px">
+        <b style="text-transform:uppercase">
+            {{getPeriod}}
+        </b>
+        <md-divider></md-divider>
+    </div>
+    <div layout="row" layout-align="start center">
+        <em flex="40">Ventas</em>
+        <div layout="row" layout-align="end center" flex="35">
+            <em><b>{{ventasTotal | currency}}</b></b></em>
+        </div>
+        <span flex></span>
+        <p>{{ventasRatio | number:0}}%</p>
+    </div>
+    <md-divider></md-divider>
+    <div layout="row" layout-align="start center">
+        <em flex="40">Otros Ingresos</em>
+        <div layout="row" layout-align="end center" flex="35">
+            <em><b>{{otrosIngresosTotal | currency}}</b></b></em>
+        </div>
+        <span flex></span>
+        <p>{{otrosIngresosRatio | number:0}}%</p>
+    </div>
+    <md-divider></md-divider>
+    <div layout-margin></div>
+    <div layout="row" data-ui-sref="home.ventas">
+        <b flex="40" class="md-subhead">Ventas Totales</b>
+        <div layout="row" layout-align="end center" flex="35">
+            <h2 class="md-subhead">
+                <md-progress-circular md-mode="indeterminate" md-diameter="30" ng-if="loader.isVentas"></md-progress-circular>
+                <b ng-if="!loader.isVentas">{{ventasTotales | currency}}</b>
+            </h2>
+        </div>
+        <span flex></span>
+    </div>
+
+    <div layout-padding layout-margin></div>
+
+    <div layout="row" data-ui-sref="home.compras">
+        <em flex="40">Compras</em>
+        <div layout="row" layout-align="end center" flex="35">
+            <em>
+                <md-progress-circular md-mode="indeterminate" md-diameter="30" ng-if="loader.isCompras"></md-progress-circular>
+                <b ng-if="!loader.isCompras">{{comprasTotal | currency}}</b>
+            </em>
+        </div>
+        <span flex></span>
+        <p>{{comprasRatio | number:0}}%</p>
+    </div>
+    <md-divider></md-divider>
+    <div layout="row" data-ui-sref="home.costosIndirectos({centroId: centroDeCosto})">
+        <em flex="40">Costos Indirectos</em>
+        <div layout="row" layout-align="end center" flex="35">
+            <em>
+                <md-progress-circular md-mode="indeterminate" md-diameter="30" ng-if="loader.isCostIndirectos"></md-progress-circular>
+                <b ng-if="!loader.isCostIndirectos">{{costosIndirectosTotal | currency}}</b>
+            </em>
+        </div>
+        <span flex></span>
+        <p>{{costosIndirectosRatio | number:0}}%</p>
+    </div>
+    <md-divider></md-divider>
+    <div layout="row" data-ui-sref="home.listEmpleado({costcenterId: centroDeCosto})">
+        <em flex="40">RRHH</em>
+        <div layout="row" layout-align="end center" flex="35">
+            <em>
+                <md-progress-circular md-mode="indeterminate" md-diameter="30" ng-if="loader.isRRHH"></md-progress-circular>
+                <b ng-if="!loader.isRRHH">{{rrhhTotal | currency}}</b>
+            </em>
+        </div>
+        <span flex></span>
+        <p>{{rrhhRatio | number:0}}%</p>
+    </div>
+    <md-divider></md-divider>
+    <div layout-padding></div>
+    <div layout="row">
+        <b flex="40" class="md-subhead">Resultado Bruto</b>
+        <div layout="row" layout-align="end center" flex="35">
+            <h2 class="md-subhead" ng-class="resultadoNeto < 0?'neg':''"><b>{{resultadoBruto | currency}}</b></h2>
+        </div>
+        <span flex></span>
+    </div>
+    <div layout-padding layout-margin></div>
+    <div layout="row" data-ui-sref="home.viewImpuesto({centroDeCosto: centroDeCosto})">
+        <em flex="40">Impuestos</em>
+        <div layout="row" layout-align="end center" flex="35">
+            <em>
+                <md-progress-circular md-mode="indeterminate" md-diameter="30" ng-if="loader.isImpuestos"></md-progress-circular>
+                <b ng-if="!loader.isImpuestos">{{impuestosTotal | currency}}</b>
+            </em>
+        </div>
+        <span flex></span>
+        <p>{{impuestosRatio | number:0}}%</p>
+    </div>
+    <md-divider></md-divider>
+    <div layout-padding layout-margin></div>
+    <div layout="row">
+        <p flex="40" class="md-title">Resultado Neto</p>
+        <div layout="row" layout-align="end" flex="35">
+            <h2 class="md-title" ng-class="resultadoNeto < 0?'neg':''">{{resultadoNeto | currency}}</b></h2>
+        </div>
+        <span flex></span>
+        <h2 class="md-title neto" ng-class="resultadoNeto < 0?'neg':''">{{resultadoRatio | number:0}}%</h2>
+    </div>
+    <div layout-padding></div>
+    <!-- <div layout-padding layout-margin></div> -->
+</div>
+
+<div class="fab-ventas" layout="row" layout-align="center center" layout-padding>
+    <md-button aria-label="Volver" class="md-fab md-raised md-mini" data-ui-sref="home.resumenList">
+        <md-icon>
+            <ng-md-icon icon="arrow_back"></ng-md-icon>
+        </md-icon>
+        <md-tooltip md-direction="top" md-autohide="true">Volver</md-tooltip>
+    </md-button>
+</div>

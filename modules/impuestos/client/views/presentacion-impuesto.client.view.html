@@ -1,0 +1,142 @@
+<section style="height: 100%">
+    <h3 style="padding: 10px">{{getPeriod}}</h3>
+
+
+
+
+    <md-content class="infiniteScrollContainer" style="height: 100%">
+
+
+
+
+        <md-list-item class="highindex" ng-show="start">
+            <div style="position: absolute; top: 60px; left: 100%;">
+                <md-progress-circular class="report-spinner" md-mode="indeterminate"></md-progress-circular>
+            </div>
+        </md-list-item>
+
+        <div infinite-scroll="loadmore()" infinite-scroll-container="'.infiniteScrollContainer'" infinite-scroll-distance="4" infinite-scroll-disabled="loading || done">
+            <!-- <md-list flex >
+                <md-list-item>
+                    <strong flex="20">Fecha</strong>
+                    <strong flex="20">Cant. Comprob</strong>
+                    <strong flex="20">Último Comprob</strong>
+                    <strong flex="20">N° de Cierre</strong>
+                    <strong flex="20">Ventas Netas</strong>
+                    <strong flex="20">IVA Total</strong>
+                    <strong flex="20">Ventas Totales</strong>
+                </md-list-item>
+                <md-divider></md-divider>
+                <md-list-item class="min-height highindex" ng-repeat="item in impuestos | orderBy: '-created'">
+                    <div flex="20" data-title="presentacionDate" >{{item.presentacionDate | date:'MMM d, y'}}</div>
+                    <div flex="20" data-title="cantComprobantes" >{{item.cantComprobantes}}</div>
+                    <div flex="20" data-title="ultComprobante" >{{item.ultComprobante}}</div>
+                    <div flex="20" data-title="nroCierre" >{{item.nroCierre}}</div>
+                    <div flex="20" data-title="ventasTotal" >{{item.ventasTotal}}</div>
+                    <div flex="20" data-title="ivaTotal" >{{item.ivaTotal}}</div>
+                    <div flex="20" data-title="ventasNetas" >{{item.ventasNetas}}</div>
+
+                    <md-divider ng-if="!$last"></md-divider>
+                    <md-list-item class="highindex" ng-show="start">
+                        <div style="position: absolute; top: 60px; left: 50%;">
+                            <md-progress-circular class="report-spinner" md-mode="indeterminate"></md-progress-circular>
+                        </div>
+                    </md-list-item>
+                </md-list-item>
+            </md-list> -->
+
+            <table id="testTable" border="2" style="width:100%">
+                <colgroup align="center"></colgroup>
+                <colgroup align="left"></colgroup>
+                <colgroup span="2" align="center"></colgroup>
+                <colgroup span="3" align="center"></colgroup>
+                <thead valign="top">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cant. Comprob</th>
+                        <th>Último Comprob</th>
+                        <th>N° de Cierre</th>
+                        <th>Ventas Netas</th>
+                        <th>IVA Total</th>
+                        <th>Ventas Totales</th>
+                        <th>Suprime</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in impuestos | orderBy: '-created'">
+                        <div>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">{{item.presentacionDate | date:'MMM d, y'}}</td>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">{{item.cantComprobantes}}</td>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">{{item.ultComprobante}}</td>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">{{item.nroCierre}}</td>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">{{item.ventasNetas}}</td>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">{{item.ivaTotal}}</td>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">{{item.ventasTotal}}</td>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">
+                                <md-button class="md-raised md-warn " style="min-width:25px; min-height:25px; border-radius:25px;" ng-click="deletePresentacion($event,item)">
+                                    <md-tooltip md-direction="top" md-autohide="true">delete this line</md-tooltip>
+                                </md-button>
+                            </td>
+                            <td ng-show="(editing._id !== item._id)" style="text-align:center">
+                                <md-button class="md-raised md-primary" style="min-width:25px; min-height:25px; border-radius:25px;" ng-click="editPresentacion(item)">
+                                    <md-tooltip md-direction="top" md-autohide="true">edit any field of this line</md-tooltip>
+
+                                </md-button>
+                            </td>
+
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                    <!-- <md-datepicker md-placeholder="{{item.presentacionDate | date:'MMM d, y'}}" ng-model="editing.presentacionDate" flex></md-datepicker> -->
+                                    {{item.presentacionDate | date:'MMM d, y'}}
+                            </td>
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                <input type="number" ng-value="{{item.cantComprobantes}}" style="text-align:center" ng-model="editing.cantComprobantes">
+                            </td>
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                <input type="number" ng-value="{{item.ultComprobante}}" style="text-align:center" ng-model="editing.ultComprobante">
+                            </td>
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                <input type="number" ng-value="{{item.nroCierre}}" style="text-align:center" ng-model="editing.nroCierre">
+                            </td>
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                <input type="number" ng-value="{{item.ventasTotal}}" style="text-align:center" ng-model="editing.ventasNetas" ng-change="change_calc_netas()">
+                            </td>
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                <input type="number" ng-value="{{item.ivaTotal}}" style="text-align:center" ng-model="editing.ivaTotal" ng-change="change_calc_netas()">
+                            </td>
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                <input type="number" ng-value="{{item.ventasNetas}}" style="text-align:center" ng-model="editing.ventasTotal" ng-change="change_calc_netas()">
+                            </td>
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                <md-button class="md-raised md-warn" style="min-width:25px; min-height:25px; border-radius:25px;" ng-click="deletePresentacion($event,item)">
+                                    <md-tooltip md-direction="top" md-autohide="true">delete this line</md-tooltip>
+                                </md-button>
+                            </td>
+                            <td ng-show="((editing) && (editing._id == item._id))" style="text-align:center">
+                                <md-button class="md-raised" style="min-width:25px; min-height:25px; border-radius:25px;" ng-click="updatePresentacion(item)">
+                                    <md-tooltip md-direction="top" md-autohide="true">update this line</md-tooltip>
+                                </md-button>
+                            </td>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </md-content>
+    <div class="fab-ventas" layout="row" layout-align="center center" layout-padding>
+        <md-button aria-label="Volver" class="md-fab md-raised md-mini" data-ui-sref="home.impuestos">
+            <md-icon>
+                <ng-md-icon icon="arrow_back"></ng-md-icon>
+            </md-icon>
+            <md-tooltip md-direction="top" md-autohide="true">Volver</md-tooltip>
+        </md-button>
+        <md-button class="btn btn-link" ng-click="exportToExcel('testTable')">
+            <span class="glyphicon glyphicon-share"></span> Descargar EXCEL
+        </md-button>
+        <md-button ng-disabled="false" ng-click="showDialogNewPresentation($event, item)">
+            Nueva Presentacion
+        </md-button>
+    </div>
+</section>

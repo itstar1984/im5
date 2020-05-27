@@ -1,0 +1,54 @@
+<md-dialog aria-label="NUEVA PRESENTACIÓN" style="min-width: 40%;">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>NUEVA PRESENTACIÓN</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="closeDialog()">
+                    <md-icon icon="close" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout-padding>
+                <div layout="row" layout-align="start center">
+                    <p class="md-caption">Fecha: </p>
+                    <md-datepicker md-placeholder="Fecha de entrada" ng-model="present.date" flex></md-datepicker>
+                </div>
+            <md-input-container class="md-block" flex-gt-sm >
+                <label>Cantidad de Comprobantes</label>
+                <input ng-model="present.cant" type = "number">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm >
+                <label>N Ultimo Comprobante</label>
+                <input ng-model="present.ult" type = "number">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm >
+                <label>Comprobante de Cierre N</label>
+                <input ng-model="present.nro" type = "number">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm >
+                <label>Ventas Totales</label>
+                <input ng-model="present.ventas" ng-change="calc_netas()" type = "number"> 
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>IVA Total</label>
+                <input ng-model="present.iva" ng-change="calc_netas()" type = "number"> 
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Ventas Netas</label>
+                <input ng-model="present.netas" ng-change="calc_netas()" type = "number">
+            </md-input-container>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="closeDialog()" class="md-accent">
+                    Cancelar
+                </md-button>
+                <md-button ng-click="addPresent($event,item)" ng-keypress="addPresent($event,item)" class="md-primary" ng-disabled="apagarBoton">
+                    Aceptar
+                </md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

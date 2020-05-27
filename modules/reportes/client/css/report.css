@@ -1,0 +1,103 @@
+.report-container {
+  position: relative
+}
+
+.report-container .report-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  background-color: #fff;
+  opacity: 0.8;
+}
+
+.report-container .report-overlay .report-spinner {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  /*margin-top: -25px;*/
+  /*margin-left: -25px;*/
+}
+
+.date-float {
+  color: rgba(0,0,0,0.60);
+  padding: 15px 20px;
+  background: #fafafa;
+  /*background: rgba(0, 198, 255, .3); */
+}
+.date-float md-datepicker {
+  padding-right:0;margin-right:0;
+  background: transparent !important;
+  padding-top: 4px;
+}
+.date-float .md-datepicker-input {/*color:rgb(21,101,192)*/color: rgba(0,0,0,0.60);text-align:right;font-weight:bold;}
+.date-float .md-datepicker-input-container {margin-left:0;border:0;}
+.date-float .md-datepicker-button {margin:0;padding:0;height:20px;width:20px}
+.date-float .md-datepicker-button button {min-height: 28px}
+.date-float md-icon {/*fill:rgb(21,101,192);*/height:20px;width:20px}
+.date-float .md-datepicker-triangle-button {fill:rgb(21,101,192);display:none;}
+
+.date-float .week-picker {
+  margin-top: 20px;
+}
+.date-float .week-picker input {
+  background: transparent !important;
+  border: none;
+  font-weight: bold;
+  color: rgba(0,0,0,0.60);
+}
+
+.report-big-total {
+  color: #fff;
+  padding: 15px 20px;
+  background: #1CD8D2;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #93EDC7, #1CD8D2);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #93EDC7, #1CD8D2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.report-big-total md-icon {
+  fill: #fff;
+  height: 30px;
+  width: 30px;
+  margin-right: 140px;
+}
+
+.report-big-total hr {
+  margin-top: 2px;
+  border: 1px solid #fff;
+}
+
+.report-small-total {
+  padding: 15px 20px;
+  /*border: 2px solid #1CD8D2;*/
+  background: rgba(28,216,210,.18);
+  /*margin-right: 5px;*/
+  color: rgba(0,0,0,0.60);
+}
+
+.report-small-total hr, .date-float hr {
+  border: 1px solid rgba(0,0,0,0.30);
+}
+
+.report-small-total span {
+  margin-bottom: 10px;
+}
+
+.report-small-total md-icon {
+  margin-right: 50px;
+}
+
+
+.resumen-view {
+  background: rgba(0,0,0,.03);
+  /*background: #fafafa;*/
+  /*border:1px solid rgba(0,0,0,.12);*/
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.resumen-view .neg {
+  color: rgb(255,0,0);
+}

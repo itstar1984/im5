@@ -1,0 +1,89 @@
+<section style="height: 100%">
+    <md-content class="infiniteScrollContainer" style="height: 100%">
+        <div layout="row" layout-margin>
+            <h2 class="md-display-1">{{impuestosName}}</h2>
+        </div>
+
+        <md-list-item class="highindex" ng-show="start">
+            <div style="position: absolute; top: 60px; left: 50%;">
+                <md-progress-circular class="report-spinner" md-mode="indeterminate"></md-progress-circular>
+            </div>
+        </md-list-item>
+
+        <div infinite-scroll="loadmore()" infinite-scroll-container="'.infiniteScrollContainer'" infinite-scroll-distance="4" infinite-scroll-disabled="loading || done">
+            <md-list flex>
+                <md-list-item>
+                    <strong flex="20">Fetcha</strong>
+                    <strong flex="20">Operacion</strong>
+                    <strong flex="15">Debe</strong>
+                    <strong flex="15">Haber</strong>
+                    <strong flex="20">Saldo</strong>
+                    <strong flex="10">Observacion</strong>
+
+                </md-list-item>
+                <md-divider></md-divider>
+                
+                <md-list-item class="min-height highindex" ng-repeat="item in impuestos">
+                    <!--| orderBy: '-created'" -->
+                    <div flex="20" data-title="created">{{item.filter_date | date:'MMM d, y'}}<!-- {{(item.type == 'Automatico') ? (item.created | date:'MMM d, y') : (item.proveedor) ? (item.fechaRecepcion | date:'MMM d, y') : (item.montoE) ? (item.pagoDate | date:'MMM d, y') : (item.created | date:'MMM d, y') }} {{(item.proveedor)
+                        ? (item.fechaRecepcion | date:'mediumTime') : (item.montoE) ? (item.pagoDate | date:'mediumTime') : (item.created | date:'mediumTime')}} --></div>
+                    <!--<div flex="20" data-title="comprobante">{{}}</div>-->
+                    <div flex="20" data-title="client">{{(item.operacion == 'Pagos')?'Pago':(item.type == 'Automatico' || item.type == 'Manual') ? 'Nueva presentacion' :(item.type == 'Payment')?'Neuva Presentation for Pagos': (item.ivaType) ? ('Ajuste') :  (item.cliente) ? 'Ventas|' + item.cliente.name : (item.montoE)? 'Nuevo Pago' :(item.adjType)
+                        ? ('Aujste') : (item.totalTax) ? 'Compras|' + (item.proveedor.name) : '-' + item.proveedor.name }}</div>
+
+                    <div flex="15" data-title="client">{{(item.operacion == 'Pagos')?'-':(item.type == 'Automatico' || item.type == "Manual") ? ((item.price) | currency) : (item.proveedor || item.adjType == 'IVA Ventas') ? ((item.price) | currency) + ' IVA Ventas': (item.ivaType == 'IVA Ventas') ? ((item.price | currency) + " " + item.ivaType) : '-'}}</div>
+
+                    <div flex="15" data-title="total">{{(item.operacion == 'Pagos')?((item.price | currency) + " " + item.ivaType):(item.cliente || item.adjType == 'IVA Compras') ? ((item.price) | currency) + " IVA Compras" : (item.totalTax) ? ((item.totalTax) | currency) : (item.montoE) ? (item.montoE | currency) : (item.ivaType == 'IVA Compras') ? ((item.price | currency) + " " + item.ivaType) : "-"}}</div>
+                    
+                    <div flex="20" data-title="iva">{{(item.saldo | currency)}}</div>
+                    <!--<div flex="20" data-title="iva">{{(item.type == 'Automatico') ? (item.price | currency) : (item.saldo | currency)}}</div>-->
+                    <!--<div flex="10" data-title="observacion" ng-if="item.observacion" style="color:red;">{{item.observacion}}</div>-->
+                    <div flex="10" data-title="observacion" ng-if="item.observacion">
+                        <md-button style="" aria-label="obs" class="md-icon-button md-mini" ng-show="item.observacion" ng-click="showAlert($event,item.observacion)">
+                            <md-icon>
+                                <ng-md-icon size="18" icon="chat"></ng-md-icon>
+                            </md-icon>
+                            <md-tooltip md-direction="top">
+                                Observacion
+                            </md-tooltip>
+                        </md-button>
+                    </div>
+                    <div flex="10" data-title="observacion" ng-if="item.observaciones">
+                        <md-button style="" aria-label="obs" class="md-icon-button md-mini" ng-show="item.observaciones" ng-click="showAlert($event,item.observaciones)">
+                            <md-icon>
+                                <ng-md-icon size="18" icon="chat"></ng-md-icon>
+                            </md-icon>
+                            <md-tooltip md-direction="top">
+                                Observacion
+                            </md-tooltip>
+                        </md-button>
+                    </div>
+
+
+
+                    <!--<div flex="20" data-title="created2" ng-if="item.price != undefined" style="color:red;">{{item.created | date:'MMM d, y'}}</div>
+                    <div flex="60" data-title="observacion" ng-if="item.price != undefined" style="color:red;">{{item.observacion}}</div>
+                    <div flex="20" data-title="price" ng-if="item.price != undefined" style="color:red;">${{item.price | number : 2}}</div>-->
+                    <md-divider ng-if="!$last"></md-divider>
+                    <md-list-item class="highindex" ng-show="start">
+                        <div style="position: absolute; top: 60px; left: 50%;">
+                            <md-progress-circular class="report-spinner" md-mode="indeterminate"></md-progress-circular>
+                        </div>
+                    </md-list-item>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+    <div class="fab-ventas" layout="row" layout-align="center center" layout-padding>
+        <md-button aria-label="Volver" class="md-fab md-raised md-mini" data-ui-sref="home.viewImpuesto({centroDeCosto:impuestos.centroDeCosto})">
+            <md-icon>
+                <ng-md-icon icon="arrow_back"></ng-md-icon>
+            </md-icon>
+            <md-tooltip md-direction="top" md-autohide="true">Volver</md-tooltip>
+        </md-button>
+        <md-button aria-label="Pagar" class="md-fab md-raised md-primary" ng-click="ctrl.showDialog($event,ctrl.finanza)">
+            <md-icon><ng-md-icon icon="attach_money"></ng-md-icon></md-icon>
+            <md-tooltip md-direction="top" md-autohide="true">Asentar Pago</md-tooltip>
+        </md-button>
+    </div>
+</section>

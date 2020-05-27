@@ -1,0 +1,12 @@
+setup:
+  config:
+    MONGOLAB_URI: >-
+      mongodb://heroku_3s96xf5s:108q0o69d93kd75vgtnj20ftfv@ds059374-a0.mongolab.com:59374,ds059374-a1.mongolab.com:59374/heroku_3s96xf5s?replicaSet=rs-ds059374
+    NODE_ENV: production
+    TZ: America/Argentina/Buenos_Aires
+    WEB_MEMORY: '512'
+build:
+   docker:
+    web: Dockerfile
+run:
+  web: node server.js

@@ -1,0 +1,17 @@
+<section style="height: 100%" data-ng-controller="NewCajaController">
+    <md-content class="infiniteScrollContainer" style="height: 100%">
+    	<md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Ventas" md-active="ventas" md-on-select="ctrl.selectedTab = 'ventas'">
+            	<md-content data-ng-include="'modules/ventas/views/create-venta.client.view.html'">
+
+            	</md-content>
+          	</md-tab>
+          	<md-tab label="Compras" md-active="compras" md-on-select="ctrl.selectedTab == 'compras'">
+          		<md-content data-ng-include="'modules/compras/views/create-compra.client.view.html'"></md-content>
+          	</md-tab>
+          	<md-tab label="Compras" md-active="compras" md-on-select="ctrl.selectedTab == 'indirector'">
+          		<md-content data-ng-include="'modules/compras/views/create-compra.client.view.html'"></md-content>
+          	</md-tab>
+        </md-tabs>
+    </md-content>
+  </section>

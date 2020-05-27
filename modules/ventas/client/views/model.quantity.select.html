@@ -1,0 +1,41 @@
+<md-dialog>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Nueva Actividad</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="closeDialog()">
+                    <md-icon icon="close" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+            <form>
+                <fieldset>
+                    <div layout="row" layout-padding>
+                        <div>
+                            <h2 class="md-headline">{{item.name}}</h2>
+                        </div>
+                    </div>
+                    <div layout="row" layout-padding>
+                        <md-input-container>
+                            Cantidad ({{item.metric}})
+                            <input type="number" data-ng-model="countvalue">
+                        </md-input-container>
+                    </div>
+                </fieldset>
+            </form>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="closeDialog()" class="md-accent">
+                    Cancelar
+                </md-button>
+                <md-button ng-click="createventas($event,item)" ng-keypress="createventas($event,item)" class="md-primary">
+                    Aceptar
+                </md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
