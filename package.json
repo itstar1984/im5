@@ -29,7 +29,7 @@
     "angular-ui-router": "~1.0.20",
     "angular-ui-utils": "~0.1.1",
     "api-query-params": "^4.9.0",
-    "async": "2.6.1",
+    "async": "2.6.4",
     "async-waterfall": "^0.1.5",
     "body-parser": "~1.18.3",
     "bootstrap": "4.0.0",
